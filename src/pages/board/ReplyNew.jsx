@@ -1,30 +1,27 @@
 import useCustomAxios from "@hooks/useCustomAxios.mjs";
 import { useForm } from "react-hook-form";
-// import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import Submit from "@components/Submit";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-// ReplyNew.propTypes = {
-//   fetchList: PropTypes.func.isRequired,
-// }
-
 function ReplyNew(){
   const { _id } = useParams();
   const axios = useCustomAxios();
-  const { register, handleSubmit, reset} = useForm();
+
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const queryClient = useQueryClient();
-
-  const addReply = useMutation({ //CRUD 같은 경우, 사용자의 액션에 의해 발생한다. 쿼리가 발생하자마자 실행x 나중에 실행할 수 있다.
+  const addReply = useMutation({
     mutationFn: (formData) => axios.post(`/posts/${ _id }/replies`, formData),
-    onSuccess(){ //queryFn이 성공적으로 리턴되었을 때 실행됨
-      queryClient.invalidateQueries(['posts', _id, 'replies']);  //fetchList 비우는 것과 동일한 기능 기존 캐시 무효화
+    onSuccess(){ // queryFn이 성공을(2xx 응답 상태 코드) 응답 받을 경우 호출되는 콜백 합수
+      // 기존 캐시 무효화
+      queryClient.invalidateQueries(['posts', _id, 'replies']);
+      
       reset();
     }
-  }); 
+  });
 
-  const onSubmit = async formData => {
+  const onSubmit = formData => {
     // await axios.post(`/posts/${ _id }/replies`, formData);
     // fetchList();
     // reset();
@@ -49,7 +46,7 @@ function ReplyNew(){
             className="block p-2 w-full text-sm border rounded-lg border-gray-300 bg-gray-50 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             placeholder="내용을 입력하세요." />
 
-          
+          { errors.comment && <p className="ml-2 mt-1 text-sm text-red-500">{ errors.comment.message }</p> }
         </div>
         <Submit size="sm">댓글 등록</Submit>
       </form>

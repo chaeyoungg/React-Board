@@ -6,7 +6,6 @@ import BoardNew from "@pages/board/BoardNew";
 import ReplyList from "@pages/board/ReplyList";
 import Login from "@pages/user/Login";
 import Signup from "@pages/user/Signup";
-import EnvCheck from "@pages/user/EnvCheck";
 import { createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
@@ -44,10 +43,6 @@ const router = createBrowserRouter([
       {
         path: "users/signup",
         element: <Signup />
-      },
-      {
-        path: "envcheck",
-        element: <EnvCheck />
       }
     ]
   },

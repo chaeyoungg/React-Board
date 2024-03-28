@@ -10,7 +10,7 @@ function ErrorPage(){
       <Header />
       <div>
         <h2>에러 메세지</h2>
-        <p>{message}</p>
+        <p>{ message }</p>
       </div>
       <Footer />
     </>

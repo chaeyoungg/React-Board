@@ -12,11 +12,12 @@ function Signup() {
     try {
       formData.type = 'user';
 
+      console.log(formData);
+
       // 이미지 먼저 업로드
       if(formData.profileImage.length > 0){ // 프로필 이미지를 추가한 경우
-        const imageFormData = new FormData(); //데이터를 주고받는 FormData 객체를 사용, 이 객체의 키는 서버에서 데이터를 가져올 때 사용한다. 
-        imageFormData.append('attach', formData.profileImage[0]); //attach 키는 서버에서 파일 받을 때 (key : attach, value: 이미지파일)
-        // console.log(formData.profileImage[0]); //파일이 넘어온다.
+        const imageFormData = new FormData();
+        imageFormData.append('attach', formData.profileImage[0]);
   
         const fileRes = await axios('/files', {
           method: 'post',
@@ -26,7 +27,7 @@ function Signup() {
           },
           data: imageFormData
         });
-        console.log(fileRes);
+  
         // 서버로부터 응답받은 이미지 이름을 회원 정보에 포함
         formData.profileImage = fileRes.data.file.name;
       }else{

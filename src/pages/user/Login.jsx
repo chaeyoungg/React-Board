@@ -6,13 +6,12 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Submit from '@components/Submit';
 
 function Login() {
-
   const location = useLocation();
   // recoil setter 반환
   const setUser = useSetRecoilState(memberState);
   const axios = useCustomAxios();
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors }, setError  } = useForm({
+  const { register, handleSubmit, formState: { errors }, setError } = useForm({
     values: {
       email: 'aa@bb.cc',
       password: '********'
@@ -32,10 +31,8 @@ function Login() {
       alert(res.data.item.name + '님 로그인 되었습니다.');
       navigate(location.state?.from ? location.state?.from : '/'); // 메인페이지로 이동
     } catch (err) { // AxiosError(네트워크 에러-response가 없음, 서버의 4xx, 5xx 응답 상태 코드를 받았을 때-response 있음)
-      if(err.response?.data.errors){
-        err.response.data.errors.forEach((error)=>{
-          setError(error.path, {message : error.msg});
-        })
+      if(err.response?.data.errors){  // API 서버가 응답한 에러
+        err.response?.data.errors.forEach(error => setError(error.path, { message: error.msg }) );
       }else if(err.response?.data.message){
         alert(err.response?.data.message);
       }

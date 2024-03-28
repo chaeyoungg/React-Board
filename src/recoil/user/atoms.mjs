@@ -2,12 +2,12 @@ import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist({
-  key: "saveip",
-  storage: sessionStorage,
+  key: 'saveUser',
+  storage: sessionStorage
 });
 
 export const memberState = atom({
-  key: "memberState",
+  key: "userState",
   default: null,
-  effects: [persistAtom],
+  effects: [persistAtom]
 });
